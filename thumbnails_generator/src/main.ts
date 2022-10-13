@@ -1,7 +1,10 @@
 import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
+import { createPinia } from 'pinia'
 import en from './locales/en.json'
 import th from './locales/th.json'
+import router from './router'
+import AppBox from './layouts/AppBox.vue'
 import App from './App.vue'
 
 /**
@@ -27,6 +30,9 @@ const i18n = createI18n({
 
 createApp(App)
 	.use(i18n)
+	.use(router)
+	.use(createPinia())
+	.component('AppBox', AppBox)
 	.mount('#app')
 	.$nextTick(() => {
 		postMessage({ payload: 'removeLoading' }, '*')

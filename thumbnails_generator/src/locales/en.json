@@ -62,36 +62,5 @@
     },
     "waitBox": {
         "message": "Please wait..."
-    },
-    "startPage": {
-        "title": "@:app",
-        "addFiles": "Add File(s)...",
-        "clear": "Clear",
-        "about": "About..."
-    },
-    "locationPage": {
-        "title": "Directory and File",
-        "directory": "Directory",
-        "dirAsSame": "Same as source images",
-        "dirAsFix": "Select directory...",
-        "file": "File",
-        "fileOutput": "File pattern",
-        "fileHint": "%F - Filename without extension\n%N - Number of trying\n%% - Percent (%) sign",
-        "type": "Type",
-        "png": "PNG",
-        "jpeg": "JPEG"
-    },
-    "photoPage": {
-        "title": "Photo Settings",
-        "size": "Sizing",
-        "sizeAsPercent": "Size as percent",
-        "sizeAsFix": "Size as fix width and height",
-        "width": "Width",
-        "height": "Height"
-    },
-    "progressPage": {
-        "title": "Progress",
-        "start": "Start",
-        "restart": "Restart"
     }
 }

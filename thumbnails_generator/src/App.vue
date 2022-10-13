@@ -1,68 +1,41 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
+//import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-	<div class="logo-box">
-		<img class="logo vite" src="./assets/vite.svg">
-		<img class="logo electron" src="./assets/electron.svg">
-		<img class="logo vue" src="./assets/vue.svg">
-	</div>
-	<HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
-	<div class="static-public">
-		Place static files into the <code>/public</code> folder
-		<img style="width:77px;" :src="'./node.png'">
-	</div>
+	<router-view></router-view>
 </template>
 
 <style>
-#app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	position: relative;
+	margin: 0;
+	font-weight: normal;
+}
+
+body {
+	font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+		Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	font-size: 15px;
+	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-	margin-top: 60px;
+	line-height: 1.6;
+	background: var(--c-background);
+	color: var(--c-color);
+	min-height: 100vh;
 }
 
-.logo-box {
-	display: flex;
-	width: 100%;
-	justify-content: center;
-}
-
-.static-public {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.static-public code {
-	background-color: #eee;
-	padding: 2px 4px;
-	margin: 0 4px;
-	border-radius: 4px;
-	color: #304455;
-}
-
-.logo {
-	height: 6em;
-	padding: 1.5em;
-	will-change: filter;
-	transition: 0.75s;
-}
-
-.logo.vite:hover {
-	filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.electron:hover {
-	filter: drop-shadow(0 0 2em #9FEAF9);
-}
-
-.logo.vue:hover {
-	filter: drop-shadow(0 0 2em #249b73);
+html,
+body,
+#app {
+	margin: 0;
+	padding: 0;
+	height: 100%;
 }
 </style>

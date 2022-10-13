@@ -62,36 +62,5 @@
     },
     "waitBox": {
         "message": "โปรดรอสักครู่..."
-    },
-    "startPage": {
-        "title": "@:app",
-        "addFiles": "เพิ่มไฟล์...",
-        "clear": "ลบไฟล์ทั้งหมด",
-        "about": "เกี่ยวกับ..."
-    },
-    "locationPage": {
-        "title": "Directory และไฟล์",
-        "directory": "Directory",
-        "dirAsSame": "เหมือนกับต้นทาง",
-        "dirAsFix": "เลือก directory...",
-        "file": "ไฟล์",
-        "fileOutput": "รูปแบบไฟล์",
-        "fileHint": "%F - ชื่อไฟล์ ไม่รวมนามสกุล\n%N - จำนวนครั้งที่ลอง\n%% - เครื่องหมายเปอร์เซ็นต์ (%)",
-        "type": "ชนิด",
-        "png": "PNG",
-        "jpeg": "JPEG"
-    },
-    "photoPage": {
-        "title": "การเซ็ตค่ารูปภาพ",
-        "size": "เลือกขนาด",
-        "sizeAsPercent": "ขนาดเป็น %",
-        "sizeAsFix": "ขนาดเป็น กว้าง x ยาว",
-        "width": "ความกว้าง",
-        "height": "ความยาว"
-    },
-    "progressPage": {
-        "title": "การทำงาน",
-        "start": "เริ่มต้น",
-        "restart": "เริ่มต้นอีกครั้ง"
     }
 }
