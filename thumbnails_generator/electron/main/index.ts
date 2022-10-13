@@ -12,7 +12,7 @@ process.env.DIST_ELECTRON = join(__dirname, '..')
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist')
 process.env.PUBLIC = app.isPackaged ? process.env.DIST : join(process.env.DIST_ELECTRON, '../public')
 
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
 
@@ -76,6 +76,22 @@ async function createWindow() {
 
 app.whenReady().then(createWindow)
 
+app.whenReady().then(() => {
+	ipcMain.handle('open-files-dialog', (event) => {
+		const options: Electron.OpenDialogOptions = {
+			properties: ['openFile', 'multiSelections'],
+			filters: [
+				{ name: 'Image Files', extensions: ['png', 'jpeg', 'jpg', 'gif'] },
+				{ name: 'All Files', extensions: ['*'] }
+			]
+		}
+		dialog.showOpenDialog(win, options).then((files: Electron.OpenDialogReturnValue) => {
+			console.log(`files: ${JSON.stringify(files, null, 2)}`)
+			event.sender.send('open-files-dialog-result', files)
+		})
+	})
+})
+
 app.on('window-all-closed', () => {
 	win = null
 	if (process.platform !== 'darwin') app.quit()
@@ -109,7 +125,7 @@ ipcMain.handle('open-win', (event, arg) => {
 	if (app.isPackaged) {
 		childWindow.loadFile(indexHtml, { hash: arg })
 	} else {
-		childWindow.loadURL(`${url}/#${arg}`)
+		childWindow.loadURL(`${url} / #${arg}`)
 		// childWindow.webContents.openDevTools({ mode: "undocked", activate: true })
 	}
 })

@@ -1,13 +1,17 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { useDialogStore } from './DialogStore'
 import { useAppStore } from './AppStore'
 
 // using
 const dialogStore = useDialogStore()
 const appStore = useAppStore()
+const router = useRouter()
 
+// setup
 dialogStore.setup()
 appStore.setup()
+router.replace('/')
 </script>
 
 <template>

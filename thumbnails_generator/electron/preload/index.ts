@@ -1,10 +1,23 @@
-const { contextBridge } = require('electron')
+const { contextBridge, ipcRenderer } = require('electron')
 
-contextBridge.exposeInMainWorld('global', {
+contextBridge.exposeInMainWorld('bridge', {
 	node: () => process.versions.node,
 	chrome: () => process.versions.chrome,
 	electron: () => process.versions.electron,
+
+	// NOTE:
 	// we can also expose variables, not just functions
+
+	openFilesDialog: () => ipcRenderer.invoke('open-files-dialog'),
+})
+
+ipcRenderer.on('open-files-dialog-result', (event, files) => {
+	const e = new CustomEvent<Electron.OpenDialogReturnValue>('open-files-dialog-return', {
+		detail: files,
+	})
+	const r = document.getElementById('receiver')
+	if (r)
+		r.dispatchEvent(e);
 })
 
 // ----------------------------------------------------------------------
