@@ -11,6 +11,14 @@ export const useDialogStore = defineStore({
 
 	actions: {
 		/**
+		 * Setup dialog store.  Run once only.
+		 */
+		setup() {
+		},
+
+		// ----------------------------------------------------------------------
+
+		/**
 		 * Opens information box.
 		 */
 		infoBox(message: string): void {

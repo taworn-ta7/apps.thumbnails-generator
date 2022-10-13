@@ -44,6 +44,8 @@ defineExpose({
 	 */
 	changeLocale(newLocale: string): void {
 		locale.value = newLocale
+		console.log(`change locale to ${newLocale}`)
+		localStorage.setItem('locale', newLocale)
 	},
 })
 

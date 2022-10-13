@@ -1,3 +1,14 @@
+const { contextBridge } = require('electron')
+
+contextBridge.exposeInMainWorld('global', {
+	node: () => process.versions.node,
+	chrome: () => process.versions.chrome,
+	electron: () => process.versions.electron,
+	// we can also expose variables, not just functions
+})
+
+// ----------------------------------------------------------------------
+
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
 	return new Promise(resolve => {
 		if (condition.includes(document.readyState)) {
