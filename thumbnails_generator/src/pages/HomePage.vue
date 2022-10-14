@@ -28,6 +28,7 @@ const appStore = useAppStore()
 // states
 const receiver = ref()
 const images = ref(<Thumbnail[]>[])
+const aboutModal = ref()
 
 // on mounting
 onMounted(() => {
@@ -77,7 +78,7 @@ function onRemove(item: Thumbnail) {
 }
 
 function onAbout() {
-	console.log(`on about...`)
+	aboutModal.value = true
 }
 
 function onNext() {
@@ -122,6 +123,19 @@ function onNext() {
 				</div>
 			</div>
 		</div>
+
+		<it-modal v-model="aboutModal ">
+			<template #header>
+				<h3 style="margin: 0">{{ t('about') }}</h3>
+			</template>
+			<template #body>
+				<div>{{ t('app') }}</div>
+				<div>{{ t('versionText') }}</div>
+			</template>
+			<template #actions>
+				<it-button type="primary" @click="aboutModal = false">{{ t('common.ok') }}</it-button>
+			</template>
+		</it-modal>
 	</AppBox>
 </template>
 
