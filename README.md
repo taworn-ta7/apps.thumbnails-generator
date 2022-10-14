@@ -2,7 +2,7 @@
 
 The thumbnails generator project.
 
-This program should be able to run on Windows, Linux and Mac.  But I can only test on Windows, sorry.
+This program should be able to run on Windows, Linux and Mac.  But I can only tested on Windows platform, sorry.
 
 ## Run
 
