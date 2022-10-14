@@ -77,6 +77,12 @@ async function createWindow() {
 app.whenReady().then(createWindow)
 
 app.whenReady().then(() => {
+	ipcMain.handle('home-dir', (event) => {
+		const home = app.getPath('pictures')
+		console.log(`home directory: ${home}`)
+		return home
+	})
+
 	ipcMain.handle('open-files-dialog', (event) => {
 		const options: Electron.OpenDialogOptions = {
 			properties: ['openFile', 'multiSelections'],
@@ -88,6 +94,16 @@ app.whenReady().then(() => {
 		dialog.showOpenDialog(win, options).then((files: Electron.OpenDialogReturnValue) => {
 			console.log(`files: ${JSON.stringify(files, null, 2)}`)
 			event.sender.send('open-files-dialog-result', files)
+		})
+	})
+
+	ipcMain.handle('open-dir-dialog', (event) => {
+		const options: Electron.OpenDialogOptions = {
+			properties: ['openDirectory'],
+		}
+		dialog.showOpenDialog(win, options).then((files: Electron.OpenDialogReturnValue) => {
+			console.log(`dir: ${JSON.stringify(files, null, 2)}`)
+			event.sender.send('open-dir-dialog-result', files)
 		})
 	})
 })

@@ -31,11 +31,10 @@ const images = ref(<Thumbnail[]>[])
 
 // on mounting
 onMounted(() => {
-	images.value = <Thumbnail[]>[]
 	for (let i = 0; i < appStore.images.length; i++)
 		images.value.push(appStore.images[i])
 
-	receiver.value = document.getElementById('receiver')
+	receiver.value = document.getElementById('files-receiver')
 	receiver.value.addEventListener('open-files-dialog-return', received)
 })
 
@@ -64,7 +63,7 @@ function received(e: Event) {
 
 function onAddFiles() {
 	// @ts-ignore
-	bridge.openFilesDialog('showOpenDialog')
+	bridge.openFilesDialog()
 }
 
 function onClear() {
@@ -88,7 +87,7 @@ function onNext() {
 
 <template>
 	<AppBox :title="t('app')">
-		<div id="receiver" hidden></div>
+		<div id="files-receiver" hidden></div>
 		<div class="wrap">
 			<div style="display: flex">
 				<div style="flex: 1 0">

@@ -5,14 +5,25 @@ contextBridge.exposeInMainWorld('bridge', {
 	chrome: process.versions.chrome,
 	electron: process.versions.electron,
 
+	home: () => ipcRenderer.invoke('home-dir'),
 	openFilesDialog: () => ipcRenderer.invoke('open-files-dialog'),
+	openDirDialog: () => ipcRenderer.invoke('open-dir-dialog'),
 })
 
 ipcRenderer.on('open-files-dialog-result', (event, files) => {
 	const e = new CustomEvent<Electron.OpenDialogReturnValue>('open-files-dialog-return', {
 		detail: files,
 	})
-	const r = document.getElementById('receiver')
+	const r = document.getElementById('files-receiver')
+	if (r)
+		r.dispatchEvent(e);
+})
+
+ipcRenderer.on('open-dir-dialog-result', (event, dir) => {
+	const e = new CustomEvent<Electron.OpenDialogReturnValue>('open-dir-dialog-return', {
+		detail: dir,
+	})
+	const r = document.getElementById('dir-receiver')
 	if (r)
 		r.dispatchEvent(e);
 })

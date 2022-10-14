@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useDialogStore } from './DialogStore'
 import { useAppStore } from './AppStore'
@@ -9,9 +10,13 @@ const appStore = useAppStore()
 const router = useRouter()
 
 // setup
-dialogStore.setup()
-appStore.setup()
 router.replace('/')
+
+// on mounting
+onMounted(() => {
+	dialogStore.setup()
+	appStore.setup()
+})
 </script>
 
 <template>

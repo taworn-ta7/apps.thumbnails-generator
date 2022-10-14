@@ -42,6 +42,7 @@ const router = useRouter()
 const appStore = useAppStore()
 
 // states
+const receiver = ref()
 const dirValue = ref(appStore.dirEnum)
 const dir = ref(appStore.dir)
 const filePattern = ref(appStore.filePattern)
@@ -49,18 +50,37 @@ const typeValue = ref(appStore.extEnum)
 
 // on mounting
 onMounted(() => {
+	receiver.value = document.getElementById('dir-receiver')
+	receiver.value.addEventListener('open-dir-dialog-return', received)
 })
 
 // on unmounting
 onBeforeUnmount(() => {
+	receiver.value.removeEventListener('open-dir-dialog-return', received)
+
 	appStore.dirEnum = dirValue.value
 	appStore.dir = dir.value
 	appStore.filePattern = filePattern.value
 	appStore.extEnum = typeValue.value
 })
 
+function received(e: Event) {
+	e.preventDefault()
+	const ev = e as CustomEvent
+	const folder = ev.detail
+	console.log(`dir: ${JSON.stringify(folder, null, 2)}`)
+
+	if (!folder.canceled) {
+		if (folder.filePaths.length > 0) {
+			dir.value = folder.filePaths[0]
+			dirValue.value = DirEnumType.chooseDir
+		}
+	}
+}
+
 function onChooseDir() {
-	console.log(`dir: ${dir.value}`)
+	// @ts-ignore
+	bridge.openDirDialog()
 }
 
 function onBack() {
@@ -74,6 +94,7 @@ function onNext() {
 
 <template>
 	<AppBox :title="t('title')">
+		<div id="dir-receiver" hidden></div>
 		<div class="wrap">
 			<div class="center">
 				<!-- directory -->

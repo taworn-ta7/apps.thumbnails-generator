@@ -57,6 +57,11 @@ export const useAppStore = defineStore({
 		 * Setup dialog store.  Run once only.
 		 */
 		setup() {
+			// @ts-ignore
+			bridge.home().then((result) => {
+				this.dir = result
+				console.log(`home directory: ${this.dir}`)
+			})
 			this.clear()
 		},
 
@@ -66,7 +71,7 @@ export const useAppStore = defineStore({
 		 * Clears data to initial state.
 		 */
 		clear(): void {
-			this.images = []
+			this.images = <Thumbnail[]>[]
 		},
 	},
 
