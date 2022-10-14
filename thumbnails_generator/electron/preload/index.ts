@@ -1,12 +1,9 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
 contextBridge.exposeInMainWorld('bridge', {
-	node: () => process.versions.node,
-	chrome: () => process.versions.chrome,
-	electron: () => process.versions.electron,
-
-	// NOTE:
-	// we can also expose variables, not just functions
+	node: process.versions.node,
+	chrome: process.versions.chrome,
+	electron: process.versions.electron,
 
 	openFilesDialog: () => ipcRenderer.invoke('open-files-dialog'),
 })
