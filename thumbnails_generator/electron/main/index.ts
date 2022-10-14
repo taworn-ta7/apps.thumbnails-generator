@@ -12,7 +12,7 @@ process.env.DIST_ELECTRON = join(__dirname, '..')
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist')
 process.env.PUBLIC = app.isPackaged ? process.env.DIST : join(process.env.DIST_ELECTRON, '../public')
 
-import { app, BrowserWindow, shell, ipcMain, dialog, nativeImage } from 'electron'
+import { app, BrowserWindow, ipcMain, shell, globalShortcut } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
 import { ipcWhenReady } from './ipc'
@@ -45,6 +45,7 @@ async function createWindow() {
 		icon: join(process.env.PUBLIC, 'favicon.ico'),
 		width: app.isPackaged ? 500 : 1200,
 		height: 700,
+		autoHideMenuBar: app.isPackaged,
 		webPreferences: {
 			preload,
 			// Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
@@ -99,6 +100,26 @@ app.on('activate', () => {
 		createWindow()
 	}
 })
+
+if (app.isPackaged) {
+	app.on('browser-window-focus', function () {
+		globalShortcut.register("Shift+CommandOrControl+R", () => {
+			console.log("shortcut disabled: Shift+CommandOrControl+R")
+		})
+		globalShortcut.register("CommandOrControl+R", () => {
+			console.log("shortcut disabled: CommandOrControl+R")
+		})
+		globalShortcut.register("F5", () => {
+			console.log("shortcut disabled: F5")
+		})
+	})
+
+	app.on('browser-window-blur', function () {
+		globalShortcut.unregister('Shift+CommandOrControl+R')
+		globalShortcut.unregister('CommandOrControl+R')
+		globalShortcut.unregister('F5')
+	})
+}
 
 // new window example arg: new windows url
 ipcMain.handle('open-win', (event, arg) => {
