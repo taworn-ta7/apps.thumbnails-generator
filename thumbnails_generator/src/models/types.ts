@@ -1,14 +1,14 @@
 export enum DirEnumType {
-	sameAsSource,
-	chooseDir,
+	sameAsSource = 0,
+	chooseDir = 1,
 }
 
 export enum ExtEnumType {
-	png,
-	jpeg,
+	png = 0,
+	jpeg = 1,
 }
 
 export enum SizeEnumType {
-	percent,
-	fix,
+	percent = 0,
+	fix = 1,
 }
