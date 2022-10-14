@@ -146,11 +146,11 @@ ul>li {
 }
 
 ul>li:nth-of-type(odd) {
-	background-color: #ccc;
+	background-color: #eee;
 }
 
 ul>li>div {
-	flex: 2 0;
+	flex: 1 0;
 	align-content: stretch;
 }
 

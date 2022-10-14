@@ -14,6 +14,7 @@ const { t } = useI18n({
 			size: "Sizing",
 			sizeAsPercent: "Size as percent",
 			sizeAsFix: "Size as fix width and height",
+			parameter: "Width x Height",
 			width: "Width",
 			height: "Height",
 		},
@@ -22,6 +23,7 @@ const { t } = useI18n({
 			size: "เลือกขนาด",
 			sizeAsPercent: "ขนาดเป็น %",
 			sizeAsFix: "ขนาดเป็น กว้าง x ยาว",
+			parameter: "กว้าง x ยาว",
 			width: "ความกว้าง",
 			height: "ความยาว",
 		},
@@ -61,30 +63,41 @@ function onNext() {
 		<div class="wrap">
 			<div class="center">
 				<!-- size -->
-				<ul>
-					<li>{{ t('size')}}</li>
-					<li>
-						<div>
-							<it-radio v-model="sizeValue" :label="t('sizeAsPercent')" :value="SizeEnumType.percent" />
+				<div class="box">
+					<h3>{{ t('size')}}</h3>
+					<div class="body">
+						<div class="item">
+							<div class="text">
+								<it-radio v-model="sizeValue" :label="t('sizeAsPercent')"
+									:value="SizeEnumType.percent" />
+							</div>
 						</div>
-					</li>
-					<li>
-						<div>
-							<it-radio v-model="sizeValue" :label="t('sizeAsFix')" :value="SizeEnumType.fix" />
+						<div class="item">
+							<div class="text">
+								<it-radio v-model="sizeValue" :label="t('sizeAsFix')" :value="SizeEnumType.fix" />
+							</div>
 						</div>
-					</li>
+					</div>
+				</div>
 
-					<!-- width -->
-					<li>
-						<div>
-							<it-number-input v-model="width" :placeholder="t('width')" :min="1" :step="5" />
+				<!-- width and height -->
+				<div class="box">
+					<h3>{{ t('parameter')}}</h3>
+					<div class="body">
+						<div class="item">
+							<div class="text">
+								<it-number-input v-model="width" :placeholder="t('width')" :label-top="t('width')"
+									:min="1" :step="5" />
+							</div>
 						</div>
-						<div>
-							<it-number-input v-model="height" :placeholder="t('height')" :min="1" :step="5" />
+						<div class="item">
+							<div class="text">
+								<it-number-input v-model="height" :placeholder="t('height')" :label-top="t('height')"
+									:min="1" :step="5" />
+							</div>
 						</div>
-					</li>
-				</ul>
-
+					</div>
+				</div>
 			</div>
 
 			<div style="display: flex">
@@ -104,24 +117,44 @@ function onNext() {
 <style scoped>
 @import "../assets/page.css";
 
-ul {
-	margin: 0;
-	padding: 0;
-	display: block;
-	list-style-type: none;
+.box {
 	width: 100%;
 }
 
-ul>li {
-	margin: 0;
-	padding: 0.5rem;
-	white-space: nowrap;
-	display: flex;
-	flex-wrap: nowrap;
-	align-items: center;
+.box h3 {
+	padding: 0.5rem 1.0rem;
+	display: block;
+	background-color: #999;
+	color: #fff;
 }
 
-ul>li:nth-of-type(odd) {
-	background-color: #ccc;
+.box .body {
+	margin: 0 0 0.5rem;
+}
+
+.box .body .item {
+	padding: 1.0rem 1.5rem 0;
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+.box .body .item .text {
+	flex: 1 0;
+}
+
+.box .body .item .subtext {
+	margin: 0.5rem 1.0rem 0.5rem 2.0rem;
+	font-size: 80%;
+	color: #333;
+}
+
+.box .body .item .subtext2 {
+	margin: 0.5rem;
+	font-size: 80%;
+	color: #333;
+}
+
+.box .body .item .icon {
+	align-self: flex-start;
 }
 </style>

@@ -51,6 +51,7 @@
     },
     "error": {
         "cantOpenImage": "ไม่สามารถเปิดไฟล์รูปภาพได้!",
+        "cantCreateThumbImage": "ไม่สามารถสร้างไฟล์สำหรับ Thumbnail ได้!",
         "cantSaveImage": "ไม่สามารถเซฟไฟล์รูปภาพได้!",
         "alreadyExists": "มีไฟล์นี้อยู่แล้ว!"
     },

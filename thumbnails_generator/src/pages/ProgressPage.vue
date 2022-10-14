@@ -12,11 +12,13 @@ const { t } = useI18n({
 	messages: {
 		en: {
 			title: "Progress",
+			wait: "please wait...",
 			start: "Start",
 			restart: "Restart",
 		},
 		th: {
 			title: "การทำงาน",
+			wait: "กรุณารอ...",
 			start: "เริ่มต้น",
 			restart: "เริ่มต้นอีกครั้ง",
 		},
@@ -103,6 +105,19 @@ async function convert() {
 	// next round
 	setTimeout(convert, 250)
 }
+
+function errorToText(error: ErrorEnumType) {
+	switch (error) {
+		case ErrorEnumType.cantOpenImage:
+			return 'error.cantOpenImage'
+		case ErrorEnumType.cantCreateThumbImage:
+			return 'error.cantCreateThumbImage'
+		case ErrorEnumType.cantSaveImage:
+			return 'error.cantSaveImage'
+		case ErrorEnumType.alreadyExists:
+			return 'error.alreadyExists'
+	}
+}
 </script>
 
 <template>
@@ -111,7 +126,12 @@ async function convert() {
 			<div class="center">
 				<ul>
 					<li v-for="item in images">
-						<div>{{ item.source }}</div>
+						<div>
+							<span :class="{ error: item.error }">{{ item.source }}</span>
+							<div class=" subtext">{{ item.ok === null ? t('wait') :
+							(item.ok ? item.target : t(errorToText(item.error!))) }}
+							</div>
+						</div>
 						<it-icon :name="item.ok === null ? 'photo_size_select_large' : (item.ok ? 'check' : 'close')"
 							outlined />
 					</li>
@@ -159,8 +179,18 @@ ul>li:nth-of-type(odd) {
 }
 
 ul>li>div {
-	flex: 2 0;
+	flex: 1 0;
 	align-content: stretch;
+}
+
+ul>li>div .subtext {
+	margin: 0.5rem;
+	font-size: 80%;
+	color: #333;
+}
+
+ul>li>div .error {
+	text-decoration: line-through;
 }
 
 ul>li>it-icon {

@@ -35,19 +35,6 @@ export function ipcWhenReady(win: BrowserWindow) {
 		})
 	})
 
-	ipcMain.handle('get-image-size', (event, fileName) => {
-		const image = nativeImage.createFromPath(fileName)
-		if (image && !image.isEmpty()) {
-			const size = image.getSize()
-			console.log(`image size: (${size.width}, ${size.height}), path=${fileName}`)
-			return size
-		}
-		else {
-			console.log(`cannot open image, path=${fileName}`)
-			return null
-		}
-	})
-
 	ipcMain.handle('make-thumbnail', async (event,
 		source: string,
 		sizeEnum: SizeEnumType,
@@ -72,7 +59,7 @@ export function ipcWhenReady(win: BrowserWindow) {
 		}
 
 		// get size
-		const size = image.getSize()
+		let size = image.getSize()
 		console.log(`image size: (${size.width}, ${size.height})`)
 
 		// reduces image size

@@ -9,7 +9,6 @@ contextBridge.exposeInMainWorld('bridge', {
 	home: () => ipcRenderer.invoke('home-dir'),
 	openFilesDialog: () => ipcRenderer.invoke('open-files-dialog'),
 	openDirDialog: () => ipcRenderer.invoke('open-dir-dialog'),
-	getImageSize: (fileName: string) => ipcRenderer.invoke('get-image-size', fileName),
 
 	makeThumbnail: (
 		source: string,

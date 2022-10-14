@@ -29,7 +29,7 @@ const { t } = useI18n({
 			dirAsFix: "เลือก directory...",
 			file: "ไฟล์",
 			fileOutput: "รูปแบบไฟล์",
-			fileHint: "%F - ชื่อไฟล์ ไม่รวมนามสกุล%N - จำนวนครั้งที่ลอง\n%% - เครื่องหมายเปอร์เซ็นต์ (%)",
+			fileHint: "%F - ชื่อไฟล์ ไม่รวมนามสกุล\n%N - จำนวนครั้งที่ลอง\n%% - เครื่องหมายเปอร์เซ็นต์ (%)",
 			fileDefault: "ใช้ค่ามาตรฐาน",
 			type: "ชนิด",
 			png: "PNG",
@@ -98,49 +98,64 @@ function onNext() {
 		<div class="wrap">
 			<div class="center">
 				<!-- directory -->
-				<ul>
-					<li>{{ t('directory')}}</li>
-					<li>
-						<div>
-							<it-radio v-model="dirValue" :label="t('dirAsSame')" :value="DirEnumType.sameAsSource" />
+				<div class="box">
+					<h3>{{ t('directory')}}</h3>
+					<div class="body">
+						<div class="item">
+							<div class="text">
+								<it-radio v-model="dirValue" :label="t('dirAsSame')"
+									:value="DirEnumType.sameAsSource" />
+							</div>
 						</div>
-					</li>
-					<li>
-						<div>
-							<it-radio v-model="dirValue" :label="t('dirAsFix')" :value="DirEnumType.chooseDir" />
+						<div class="item">
+							<div class="text">
+								<it-radio v-model="dirValue" :label="t('dirAsFix')" :value="DirEnumType.chooseDir" />
+								<div class="subtext">{{ dir }}</div>
+							</div>
+							<span class="icon">
+								<it-icon name="more_horiz" outlined @click.prevent="(e: Event) => onChooseDir()" />
+							</span>
 						</div>
-						<div>{{ dir }}</div>
-						<it-icon name="more_horiz" outlined @click.prevent="(e: Event) => onChooseDir()" />
-					</li>
-				</ul>
+					</div>
+				</div>
 
 				<!-- file -->
-				<ul>
-					<li>{{ t('file') }}</li>
-					<li>
-						<it-input v-model="filePattern" status="warning" :message="t('fileHint')"
-							:placeholder="t('fileOutput')" />
-						<it-button type="black" class="page-button"
-							@click.prevent="(e: Event) => filePattern = '%F-thumb%N'">{{
-							t('fileDefault')
-							}}</it-button>
-					</li>
-				</ul>
+				<div class="box">
+					<h3>{{ t('file') }}</h3>
+					<div class="body">
+						<div class="item">
+							<div class="text">
+								<it-input v-model="filePattern" status="warning" :placeholder="t('fileOutput')" />
+								<div class="subtext2">
+									<span style="white-space: pre;">{{ t('fileHint') }}</span>
+								</div>
+							</div>
+							<span class="icon" style="margin-left: 1.0rem">
+								<it-button type="black" class="page-button"
+									@click.prevent="(e: Event) => filePattern = '%F-thumb%N'">{{
+									t('fileDefault')
+									}}</it-button>
+							</span>
+						</div>
+					</div>
+				</div>
 
 				<!-- type -->
-				<ul>
-					<li>{{ t('type') }}</li>
-					<li>
-						<div>
-							<it-radio v-model="typeValue" :label="t('png')" :value="ExtEnumType.png" />
+				<div class="box">
+					<h3>{{ t('type')}}</h3>
+					<div class="body">
+						<div class="item">
+							<div class="text">
+								<it-radio v-model="typeValue" :label="t('png')" :value="ExtEnumType.png" />
+							</div>
 						</div>
-					</li>
-					<li>
-						<div>
-							<it-radio v-model="typeValue" :label="t('jpeg')" :value="ExtEnumType.jpeg" />
+						<div class="item">
+							<div class="text">
+								<it-radio v-model="typeValue" :label="t('jpeg')" :value="ExtEnumType.jpeg" />
+							</div>
 						</div>
-					</li>
-				</ul>
+					</div>
+				</div>
 			</div>
 
 			<div style="display: flex">
@@ -160,24 +175,44 @@ function onNext() {
 <style scoped>
 @import "../assets/page.css";
 
-ul {
-	margin: 0;
-	padding: 0;
-	display: block;
-	list-style-type: none;
+.box {
 	width: 100%;
 }
 
-ul>li {
-	margin: 0;
-	padding: 0.5rem;
-	white-space: nowrap;
-	display: flex;
-	flex-wrap: nowrap;
-	align-items: center;
+.box h3 {
+	padding: 0.5rem 1.0rem;
+	display: block;
+	background-color: #999;
+	color: #fff;
 }
 
-ul>li:nth-of-type(odd) {
-	background-color: #ccc;
+.box .body {
+	margin: 0 0 0.5rem;
+}
+
+.box .body .item {
+	padding: 1.0rem 1.5rem 0;
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+.box .body .item .text {
+	flex: 1 0;
+}
+
+.box .body .item .subtext {
+	margin: 0.5rem 1.0rem 0.5rem 2.0rem;
+	font-size: 80%;
+	color: #333;
+}
+
+.box .body .item .subtext2 {
+	margin: 0.5rem;
+	font-size: 80%;
+	color: #333;
+}
+
+.box .body .item .icon {
+	align-self: flex-start;
 }
 </style>

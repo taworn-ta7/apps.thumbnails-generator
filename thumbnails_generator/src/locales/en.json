@@ -51,6 +51,7 @@
     },
     "error": {
         "cantOpenImage": "Cannot open image file!",
+        "cantCreateThumbImage": "Cannot create thumbnail file!",
         "cantSaveImage": "Cannot save image file!",
         "alreadyExists": "File is already exists!"
     },
