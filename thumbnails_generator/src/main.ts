@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { createPinia } from 'pinia'
+import Equal from 'equal-vue'
+import 'equal-vue/dist/style.css'
 import en from './locales/en.json'
 import th from './locales/th.json'
 import router from './router'
@@ -32,6 +34,7 @@ createApp(App)
 	.use(i18n)
 	.use(router)
 	.use(createPinia())
+	.use(Equal)
 	.component('AppBox', AppBox)
 	.mount('#app')
 	.$nextTick(() => {

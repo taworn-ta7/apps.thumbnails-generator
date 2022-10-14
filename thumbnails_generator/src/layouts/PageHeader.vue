@@ -17,10 +17,10 @@ const dialogStore = useDialogStore()
 		<div id="app-bar">
 			<div id="title">{{ props.title ?? t('app') }}</div>
 
-			<button class="icon" :title="t('switchLocale.en')"
-				@click.prevent="(e: Event) => dialogStore.changeLocale('en')">EN</button>
-			<button class="icon" :title="t('switchLocale.th')"
-				@click.prevent="(e: Event) => dialogStore.changeLocale('th')">TH</button>
+			<it-button class="icon" :title="t('switchLocale.en')"
+				@click.prevent="(e: Event) => dialogStore.changeLocale('en')">EN</it-button>
+			<it-button class="icon" :title="t('switchLocale.th')"
+				@click.prevent="(e: Event) => dialogStore.changeLocale('th')">TH</it-button>
 		</div>
 	</header>
 </template>
@@ -49,7 +49,7 @@ header {
 
 .icon {
 	flex: 0 0;
-	margin: 0;
-	padding: 0.5rem;
+	margin: 0 0 0 0.25rem;
+	padding: 0.75rem;
 }
 </style>

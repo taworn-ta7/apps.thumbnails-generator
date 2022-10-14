@@ -65,10 +65,12 @@ function onNext() {
 		<div class="wrap">
 			<div style="display: flex">
 				<div style="flex: 1 0">
-					<button class="page-button" @click.prevent="(e: Event) => onAddFiles()">{{ t('addFiles') }}</button>
+					<it-button type="success" class="page-button" @click.prevent="(e: Event) => onAddFiles()">{{
+					t('addFiles') }}</it-button>
 				</div>
 				<div>
-					<button class="page-button" @click.prevent="(e: Event) => onClear()">{{ t('clear') }}</button>
+					<it-button type="success" outlined class="page-button" @click.prevent="(e: Event) => onClear()">{{
+					t('clear') }}</it-button>
 				</div>
 			</div>
 
@@ -78,10 +80,13 @@ function onNext() {
 
 			<div style="display: flex">
 				<div style="flex: 1 0">
-					<button class="page-button" @click.prevent="(e: Event) => onAbout()">{{ t('about') }}</button>
+					<it-button type="black" class="page-button" @click.prevent="(e: Event) => onAbout()">{{
+					t('about')
+					}}</it-button>
 				</div>
 				<div>
-					<button class="page-button" @click.prevent="(e: Event) => onNext()">{{ t('common.next') }}</button>
+					<it-button type="primary" class="page-button" @click.prevent="(e: Event) => onNext()">{{
+					t('common.next') }}</it-button>
 				</div>
 			</div>
 		</div>

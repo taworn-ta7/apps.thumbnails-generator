@@ -52,10 +52,12 @@ function onNext() {
 
 			<div style="display: flex">
 				<div style="flex: 1 0">
-					<button class="page-button" @click.prevent="(e: Event) => onBack()">{{ t('common.back') }}</button>
+					<it-button class="page-button" @click.prevent="(e: Event) => onBack()">{{ t('common.back')
+					}}</it-button>
 				</div>
 				<div>
-					<button class="page-button" @click.prevent="(e: Event) => onNext()">{{ t('common.next') }}</button>
+					<it-button type="primary" class="page-button" @click.prevent="(e: Event) => onNext()">{{
+					t('common.next') }}</it-button>
 				</div>
 			</div>
 		</div>
