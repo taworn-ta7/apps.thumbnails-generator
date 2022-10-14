@@ -54,7 +54,8 @@ onMounted(() => {
 
 // on unmounting
 onBeforeUnmount(() => {
-	appStore.clear()
+	if (finished.value)
+		appStore.clear()
 })
 
 function onBack() {

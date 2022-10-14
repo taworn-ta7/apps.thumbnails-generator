@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, dialog, nativeImage } from 'electron'
 import * as path from 'path'
 import * as fs from 'fs'
+import { Image } from 'image-js'
 import { SizeEnumType, DirEnumType, ExtEnumType } from '../models/types'
 import { Thumbnail, ErrorEnumType } from '../models/thumbnail'
 
@@ -50,34 +51,41 @@ export function ipcWhenReady(win: BrowserWindow) {
 
 		// loads image
 		console.log(`load image: ${JSON.stringify(source, null, 2)}`)
-		const image = nativeImage.createFromPath(source)
-		if (!image || image.isEmpty()) {
+		let image: Image
+		try {
+			image = await Image.load(source)
+		}
+		catch (Exception) {
 			o.ok = false
 			o.error = ErrorEnumType.cantOpenImage
 			console.log(`error: cannot open image`)
 			return o
 		}
 
-		// get size
-		let size = image.getSize()
-		console.log(`image size: (${size.width}, ${size.height})`)
+		// get image size
+		console.log(`image size: (${image.width}, ${image.height})`)
 
 		// reduces image size
+		let w: number
+		let h: number
 		if (sizeEnum === SizeEnumType.percent) {
 			// size as %
-			size.width = Math.round(width * size.width / 100)
-			size.height = Math.round(height * size.height / 100)
-			console.log(`size as %, width=${size.width}, height=${size.height}`)
+			w = Math.round(width * image.width / 100)
+			h = Math.round(height * image.height / 100)
+			console.log(`size as %, width=${w}, height=${h}`)
 		} else {
 			// size as fix
-			size.width = width
-			size.height = height
-			console.log(`size as fix, width=${size.width}, height=${size.height}`)
+			w = width
+			h = height
+			console.log(`size as fix, width=${w}, height=${h}`)
 		}
 
 		// make thumbnail
-		const thumb = await nativeImage.createThumbnailFromPath(source, size)
-		if (!thumb) {
+		let thumb: Image
+		try {
+			thumb = image.resize({ width: w, height: h })
+		}
+		catch (Exception) {
 			o.ok = false
 			o.error = ErrorEnumType.cantCreateThumbImage
 			console.log(`error: cannot create thumbnail image`)
@@ -140,27 +148,27 @@ export function ipcWhenReady(win: BrowserWindow) {
 			if (retry >= 10) break
 			retry++
 		}
-		if (exists) {
+		if (exists || retry >= 10) {
 			o.ok = false
-			o.error = ErrorEnumType.cantCreateThumbImage
+			o.error = ErrorEnumType.alreadyExists
 			console.log(`error: already exists`)
 			return o
 		}
 		o.target = filePath
 
 		// output to file
-		let buffer: Buffer
+		let saveOptions: any
 		switch (extEnum) {
 			case ExtEnumType.jpeg:
-				buffer = thumb.toJPEG(95)
+				saveOptions = { format: 'jpg' }
 				break
 			case ExtEnumType.png:
 			default:
-				buffer = thumb.toPNG()
+				saveOptions = { format: 'png' }
 				break
 		}
 		try {
-			await fs.promises.writeFile(filePath, buffer)
+			await thumb.save(filePath, saveOptions)
 		}
 		catch (Exception) {
 			o.ok = false
