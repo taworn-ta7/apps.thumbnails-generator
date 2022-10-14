@@ -1,7 +1,10 @@
 <script setup lang="ts">
-//import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { SizeEnumType } from '../models/types'
+//import { useDialogStore } from '../DialogStore'
+import { useAppStore } from '../AppStore'
 
 // using
 const { t } = useI18n({
@@ -25,6 +28,24 @@ const { t } = useI18n({
 	},
 })
 const router = useRouter()
+//const dialogStore = useDialogStore()
+const appStore = useAppStore()
+
+// states
+const sizeValue = ref(appStore.sizeEnum)
+const width = ref(appStore.width)
+const height = ref(appStore.height)
+
+// on mounting
+onMounted(() => {
+})
+
+// on unmounting
+onBeforeUnmount(() => {
+	appStore.sizeEnum = sizeValue.value
+	appStore.width = width.value
+	appStore.height = height.value
+})
 
 function onBack() {
 	router.replace('/location')
@@ -39,7 +60,31 @@ function onNext() {
 	<AppBox :title="t('title')">
 		<div class="wrap">
 			<div class="center">
-				photo...
+				<!-- size -->
+				<ul>
+					<li>{{ t('size')}}</li>
+					<li>
+						<div>
+							<it-radio v-model="sizeValue" :label="t('sizeAsPercent')" :value="SizeEnumType.percent" />
+						</div>
+					</li>
+					<li>
+						<div>
+							<it-radio v-model="sizeValue" :label="t('sizeAsFix')" :value="SizeEnumType.fix" />
+						</div>
+					</li>
+
+					<!-- width -->
+					<li>
+						<div>
+							<it-number-input v-model="width" :placeholder="t('width')" :min="1" :step="5" />
+						</div>
+						<div>
+							<it-number-input v-model="height" :placeholder="t('height')" :min="1" :step="5" />
+						</div>
+					</li>
+				</ul>
+
 			</div>
 
 			<div style="display: flex">
@@ -58,4 +103,25 @@ function onNext() {
 
 <style scoped>
 @import "../assets/page.css";
+
+ul {
+	margin: 0;
+	padding: 0;
+	display: block;
+	list-style-type: none;
+	width: 100%;
+}
+
+ul>li {
+	margin: 0;
+	padding: 0.5rem;
+	white-space: nowrap;
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+}
+
+ul>li:nth-of-type(odd) {
+	background-color: #ccc;
+}
 </style>
