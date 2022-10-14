@@ -14,7 +14,7 @@ export const useAppStore = defineStore({
 		/**
 		 * Image files.
 		 */
-		images: [],
+		images: <Thumbnail[]>[],
 
 		/**
 		 * Directory usage.

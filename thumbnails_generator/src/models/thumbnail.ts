@@ -39,14 +39,8 @@ export class Thumbnail {
 	public error: ErrorEnumType | null = null;
 
 	/// Constructor
-	constructor(
-		source: string,
-		sourceName: string,
-		sourceSize: number,
-	) {
+	constructor(source: string) {
 		this.source = source
-		this.sourceName = sourceName
-		this.sourceSize = sourceSize
 	}
 
 }
