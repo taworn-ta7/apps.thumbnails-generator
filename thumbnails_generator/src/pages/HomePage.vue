@@ -73,7 +73,7 @@ function onClear() {
 function onRemove(item: Thumbnail) {
 	const index = images.value.findIndex((element: Thumbnail) => element.source === item.source)
 	if (index >= 0)
-		images.value.splice(index, 1);
+		images.value.splice(index, 1)
 }
 
 function onAbout() {

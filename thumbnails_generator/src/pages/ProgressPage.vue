@@ -2,7 +2,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { Thumbnail } from '../models/thumbnail'
+import { Thumbnail, ErrorEnumType } from '../models/thumbnail'
 import { DirEnumType, ExtEnumType, SizeEnumType } from '../models/types'
 //import { useDialogStore } from '../DialogStore'
 import { useAppStore } from '../AppStore'
@@ -72,144 +72,35 @@ function onNext() {
 	}
 }
 
-function convert() {
+async function convert() {
 	if (index.value >= appStore.images.length) {
 		finished.value = true
 		return
 	}
 
-	// get current thumbnail
+	// send to main thread
 	const idx = index.value
 	index.value++
-	const o = images.value[idx];
-	console.log(`#${idx}: ${o.source}`);
+	// @ts-ignore
+	const o = await bridge.makeThumbnail(
+		images.value[idx].source,
+		appStore.sizeEnum,
+		appStore.width,
+		appStore.height,
+		appStore.dirEnum,
+		appStore.dir,
+		appStore.extEnum,
+		appStore.filePattern,
+	)
 
-	/*
-	// get image source
-	var sourceFile = File(o.source);
-	var basename = path.basenameWithoutExtension(o.source);
-	var data = await sourceFile.readAsBytes();
-	Image? image;
-	if (data.isNotEmpty) {
-	  try {
-		image = decodeImage(data);
-	  } catch (ex) {
-		log.warning(ex);
-		image = null;
-	  }
-	}
-	if (image == null) {
-	  _errorHandle(o, ErrorEnumType.cantOpenImage);
-	  log.warning("#$index: ${o.error}");
-	  return;
-	}
-	*/
+	// get result back
+	const i = images.value[idx]
+	i.target = o.target
+	i.ok = o.ok
+	i.error = o.error
+	console.log(`image ${idx}: ${JSON.stringify(i, null, 2)}`)
 
-	// reduces image, get size
-	let w = 0, h = 0
-	if (appStore.sizeEnum === SizeEnumType.percent) {
-		// size as %
-		/*
-		w = appStore.width * image.width / 100;
-		h = appStore.height * image.height / 100;
-		log.info("#$index: size as %, width=$w, height=$h");
-		*/
-	} else {
-		// size as fix
-		w = appStore.width;
-		h = appStore.height;
-		console.log(`#${idx}: size as fix, width=${w}, height=${h}`);
-	}
-
-	/*
-	// make thumbnail
-	Image ? thumbnail;
-	try {
-		thumbnail = copyResize(image, width: w, height: h);
-	} on Exception {
-		thumbnail = null;
-	}
-	if (thumbnail == null) {
-		_errorHandle(o, ErrorEnumType.cantSaveImage);
-		log.warning("#$index: ${o.error}");
-		return;
-	}
-	*/
-
-	// output directory
-	let dir = '';
-	if (appStore.dirEnum === DirEnumType.sameAsSource) {
-		// same as source
-		/*
-		dir = sourceFile.parent.path;
-		log.info("#$index: same as source, dir=$dir");
-		*/
-	} else {
-		// directory fix
-		dir = appStore.dir;
-		console.log(`#${idx}: fix directory, dir=${dir}`);
-	}
-
-	// output file type
-	let ext = '';
-	switch (appStore.extEnum) {
-		case ExtEnumType.jpeg:
-			ext = 'jpeg';
-			break;
-		case ExtEnumType.png:
-		default:
-			ext = 'png';
-			break;
-	}
-
-	/*
-	// output file name
-	let filePath = '';
-	let exists = false;
-	let retry = 0;
-	while (true) {
-		var fileName = appStore.filePattern.replaceAllMapped(re, (match) {
-			switch (match[1]) {
-				case 'F':
-					return basename;
-				case 'N':
-					return retry <= 0 ? '' : retry.toString();
-				case '%':
-					return '%';
-			}
-			return '';
-		});
-		filePath = path.join(dir, '$fileName.$ext');
-		exists = await File(filePath).exists();
-		log.info("#$index: $filePath, exists=$exists");
-		if (!exists) break;
-		if (retry >= AppShare.maxRetry) break;
-		retry++;
-	}
-	if (exists) {
-		_errorHandle(o, ErrorEnumType.alreadyExists);
-		log.warning("#$index: ${o.error}");
-		return;
-	}
-	
-	// output to file
-	switch (appStore.extEnum) {
-		case ExtEnumType.jpeg:
-			await File(filePath).writeAsBytes(encodeJpg(thumbnail));
-			break;
-		case ExtEnumType.png:
-		default:
-			await File(filePath).writeAsBytes(encodePng(thumbnail));
-			break;
-	}
-	
-	setState(() {
-		o.target = filePath;
-		o.ok = true;
-	});
-	*/
-	o.ok = true
-	console.log(`#${idx}: ok :)`);
+	// next round
 	setTimeout(convert, 250)
 }
 </script>
@@ -221,7 +112,8 @@ function convert() {
 				<ul>
 					<li v-for="item in images">
 						<div>{{ item.source }}</div>
-						<it-icon :name="item.ok ? 'check' : 'photo_size_select_large'" outlined />
+						<it-icon :name="item.ok === null ? 'photo_size_select_large' : (item.ok ? 'check' : 'close')"
+							outlined />
 					</li>
 				</ul>
 			</div>

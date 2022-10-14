@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { ErrorEnumType, Thumbnail } from './models/thumbnail'
-import { DirEnumType, ExtEnumType, SizeEnumType } from './models/types';
+import { Thumbnail } from './models/thumbnail'
+import { DirEnumType, ExtEnumType, SizeEnumType } from './models/types'
 
 /**
  * Application shared service singleton class.

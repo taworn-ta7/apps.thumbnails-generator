@@ -1,4 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron')
+import { SizeEnumType, DirEnumType, ExtEnumType } from "../models/types"
 
 contextBridge.exposeInMainWorld('bridge', {
 	node: process.versions.node,
@@ -8,6 +9,27 @@ contextBridge.exposeInMainWorld('bridge', {
 	home: () => ipcRenderer.invoke('home-dir'),
 	openFilesDialog: () => ipcRenderer.invoke('open-files-dialog'),
 	openDirDialog: () => ipcRenderer.invoke('open-dir-dialog'),
+	getImageSize: (fileName: string) => ipcRenderer.invoke('get-image-size', fileName),
+
+	makeThumbnail: (
+		source: string,
+		sizeEnum: SizeEnumType,
+		width: number,
+		height: number,
+		dirEnum: DirEnumType,
+		dir: string,
+		extEnum: ExtEnumType,
+		filePattern: string,
+	) => ipcRenderer.invoke('make-thumbnail',
+		source,
+		sizeEnum,
+		width,
+		height,
+		dirEnum,
+		dir,
+		extEnum,
+		filePattern,
+	),
 })
 
 ipcRenderer.on('open-files-dialog-result', (event, files) => {
@@ -16,7 +38,7 @@ ipcRenderer.on('open-files-dialog-result', (event, files) => {
 	})
 	const r = document.getElementById('files-receiver')
 	if (r)
-		r.dispatchEvent(e);
+		r.dispatchEvent(e)
 })
 
 ipcRenderer.on('open-dir-dialog-result', (event, dir) => {
@@ -25,7 +47,7 @@ ipcRenderer.on('open-dir-dialog-result', (event, dir) => {
 	})
 	const r = document.getElementById('dir-receiver')
 	if (r)
-		r.dispatchEvent(e);
+		r.dispatchEvent(e)
 })
 
 // ----------------------------------------------------------------------

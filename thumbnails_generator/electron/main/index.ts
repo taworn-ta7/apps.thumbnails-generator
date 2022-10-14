@@ -12,9 +12,10 @@ process.env.DIST_ELECTRON = join(__dirname, '..')
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist')
 process.env.PUBLIC = app.isPackaged ? process.env.DIST : join(process.env.DIST_ELECTRON, '../public')
 
-import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, dialog, nativeImage } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
+import { ipcWhenReady } from './ipc'
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -75,38 +76,7 @@ async function createWindow() {
 }
 
 app.whenReady().then(createWindow)
-
-app.whenReady().then(() => {
-	ipcMain.handle('home-dir', (event) => {
-		const home = app.getPath('pictures')
-		console.log(`home directory: ${home}`)
-		return home
-	})
-
-	ipcMain.handle('open-files-dialog', (event) => {
-		const options: Electron.OpenDialogOptions = {
-			properties: ['openFile', 'multiSelections'],
-			filters: [
-				{ name: 'Image Files', extensions: ['png', 'jpeg', 'jpg', 'gif'] },
-				{ name: 'All Files', extensions: ['*'] }
-			]
-		}
-		dialog.showOpenDialog(win, options).then((files: Electron.OpenDialogReturnValue) => {
-			console.log(`files: ${JSON.stringify(files, null, 2)}`)
-			event.sender.send('open-files-dialog-result', files)
-		})
-	})
-
-	ipcMain.handle('open-dir-dialog', (event) => {
-		const options: Electron.OpenDialogOptions = {
-			properties: ['openDirectory'],
-		}
-		dialog.showOpenDialog(win, options).then((files: Electron.OpenDialogReturnValue) => {
-			console.log(`dir: ${JSON.stringify(files, null, 2)}`)
-			event.sender.send('open-dir-dialog-result', files)
-		})
-	})
-})
+app.whenReady().then(() => ipcWhenReady(win))
 
 app.on('window-all-closed', () => {
 	win = null
